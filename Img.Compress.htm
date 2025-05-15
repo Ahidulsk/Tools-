@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Free online image compression tool. Compress JPG, PNG, and WebP images with custom quality settings.">
+  <meta name="keywords" content="image compression, image optimizer, compress jpg, compress png, image tool">
+  <meta name="author" content="YourSiteName">
+  <title>Online Image Compressor</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f4f4;
+      color: #333;
+    }
+    header {
+      background: #0066cc;
+      color: #fff;
+      padding: 1rem;
+      text-align: center;
+    }
+    main {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .upload-section, .ads-section {
+      margin: 1rem 0;
+    }
+    .upload-section input[type=file],
+    .upload-section input[type=range] {
+      width: 100%;
+      margin: 0.5rem 0;
+    }
+    #preview {
+      max-width: 100%;
+      margin-top: 1rem;
+    }
+    .ads-section {
+      text-align: center;
+      margin: 2rem 0;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: #222;
+      color: #fff;
+      margin-top: 2rem;
+    }
+    @media (max-width: 600px) {
+      main {
+        margin: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Online Image Compressor</h1>
+    <p>Reduce image size while maintaining quality</p>
+  </header>
+  <main>
+    <section class="upload-section">
+      <label for="imageUpload">Choose an image to compress:</label>
+      <input type="file" id="imageUpload" accept="image/*">
+      <label for="quality">Compression Quality: <span id="qualityValue">70</span>%</label>
+      <input type="range" id="quality" min="10" max="100" value="70">
+      <canvas id="canvas" style="display:none;"></canvas>
+      <img id="preview" alt="Compressed preview" />
+      <br>
+      <a id="downloadLink" download="compressed-image.jpg" style="display:none;">Download Compressed Image</a>
+    </section>
+    <section class="ads-section">
+      <!-- Google AdSense Placeholder -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+           data-ad-slot="1234567890"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </section>
+  </main>
+  <footer>
+    &copy; 2025 Online Image Compressor. All rights reserved.
+  </footer>
+  <script>
+    const imageUpload = document.getElementById('imageUpload');
+    const qualitySlider = document.getElementById('quality');
+    const qualityValue = document.getElementById('qualityValue');
+    const canvas = document.getElementById('canvas');
+    const preview = document.getElementById('preview');
+    const downloadLink = document.getElementById('downloadLink');
+    qualitySlider.addEventListener('input', () => {
+      qualityValue.textContent = qualitySlider.value;
+    });
+    imageUpload.addEventListener('change', () => {
+      const file = imageUpload.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          canvas.width = img.width;
+          canvas.height = img.height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0);
+          const quality = parseInt(qualitySlider.value) / 100;
+          canvas.toBlob((blob) => {
+            const url = URL.createObjectURL(blob);
+            preview.src = url;
+            downloadLink.href = url;
+            downloadLink.style.display = 'inline-block';
+          }, 'image/jpeg', quality);
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  </script>
+  <!-- Google AdSense Script -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</body>
+</html>
